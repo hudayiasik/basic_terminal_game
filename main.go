@@ -1,28 +1,38 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"time"
+	"os"
 )
 
 var x int
 var y int
 var height int = 10
 var width int = 20
-var key rune // keyboard input (w, s, a, d, q)
+var key string // keyboard input (w, s, a, d, q)
 
 func main() {
 	//infinit loop
 	for {
-		display()      // display the map
-		fmt.Scan(&key) // get the keyboard input
-		if move() == false {break} // move the player until press q
-		time.Sleep(500 * time.Millisecond) // sleep 500ms
+		display() // display the map
+		scanner := bufio.NewScanner(os.Stdin)
+		for scanner.Scan() {
+			key = scanner.Text()
+			break
+		}
+		if !move() {
+			break
+		} // move the player until press q
+		//time.Sleep(500 * time.Millisecond) // sleep 500ms
 	}
 }
 
 func move() bool {
-	switch key {
+	if key == "" {
+		return true
+	}
+	switch key[0] {
 	case 'w': //up
 		if x > 0 {
 			x--
