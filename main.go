@@ -6,64 +6,70 @@ import (
 	"os"
 )
 
-var x int
-var y int
-var height int = 10
-var width int = 20
+type game struct {
+	x, y    int
+	height  int
+	width   int
+	running bool
+}
+
 var key string // keyboard input (w, s, a, d, q)
 
-func main() {
-	//infinit loop
-	for {
-		display() // display the map
-		scanner := bufio.NewScanner(os.Stdin)
-		for scanner.Scan() {
-			key = scanner.Text()
-			break
-		}
-		if !move() {
-			break
-		} // move the player until press q
-		//time.Sleep(500 * time.Millisecond) // sleep 500ms
+func (g *game) update(key rune) {
+	if key == ' ' {
+		return
 	}
-}
 
-func move() bool {
-	if key == "" {
-		return true
-	}
-	switch key[0] {
+	switch key {
 	case 'w': //up
-		if x > 0 {
-			x--
+		if g.x > 0 {
+			g.x--
 		}
 	case 's': //down
-		if x < height-1 {
-			x++
+		if g.x < g.height-1 {
+			g.x++
 		}
 	case 'a': //left
-		if y > 0 {
-			y--
+		if g.y > 0 {
+			g.y--
 		}
 	case 'd': //right
-		if y < width-1 {
-			y++
+		if g.y < g.width-1 {
+			g.y++
 		}
 	case 'q': //quit
-		return false
+		g.running = false
 	}
-	return true
 }
 
-func display() { // display the map
-	for i := 0; i < height; i++ {
-		for j := 0; j < width; j++ {
-			if i == x && j == y {
+func (g *game) display() { // display the map
+	for i := 0; i < g.height; i++ {
+		for j := 0; j < g.width; j++ {
+			if i == g.x && j == g.y {
 				fmt.Print("O") // player
 			} else {
 				fmt.Print(".") // empty
 			}
 		}
 		fmt.Println() // new line
+	}
+}
+func read_input() rune {
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		key = scanner.Text()
+		if key != "" && key[0] != ' ' {
+			break
+		}
+	}
+	return rune(key[0])
+}
+
+func main() {
+	g := game{0, 0, 10, 20, true} // x,y,height,width,running
+	for g.running {
+		g.display()
+		key := read_input()
+		g.update(key)
 	}
 }
