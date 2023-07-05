@@ -25,7 +25,7 @@ type food struct {
 	x, y int
 }
 
-func (g *game) init_food() {
+func (g *game) initFood() {
 	// Initialize the food struct with random x and y positions within the grid
 	g.food = &food{rand.Intn(g.height), rand.Intn(g.width)}
 }
@@ -36,13 +36,13 @@ func (g *game) check_food() {
 		// Add a new element to the snake's body
 		g.snake.PushBack(&snake{g.snake.Back().Value.(*snake).x, g.snake.Back().Value.(*snake).y})
 		// Generate a new food at a random position
-		g.init_food()
+		g.initFood()
 	}
 }
 
 var key string // keyboard input (w, s, a, d, q)
 
-func (g *game) set_direction(key rune) {
+func (g *game) setDirection(key rune) {
 	if key == ' ' {
 		return
 	}
@@ -71,7 +71,7 @@ func (g *game) set_direction(key rune) {
 
 }
 
-func (g *game) move_tails() {
+func (g *game) moveTails() {
 	// Iterate through the elements in the list, starting from the second element
 	for e := g.snake.Front().Next(); e != nil; e = e.Next() {
 		// Set the current element's x and y to the x and y of the previous element
@@ -84,7 +84,7 @@ func (g *game) update() {
 
 	dir := g.direction
 
-	g.move_tails()
+	g.moveTails()
 	switch dir {
 	case 0: //up
 		// game.snake.Front
@@ -130,7 +130,7 @@ func (g *game) display() {
 	}
 }
 
-func read_input() rune {
+func readInput() rune {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		key = scanner.Text()
@@ -146,12 +146,12 @@ func main() {
 	f := food{0, 0}
 	g := game{list.New(), &f, 10, 10, true, 2}
 	g.snake.PushBack(&s) // head
-	g.init_food()
+	g.initFood()
 
 	for g.running {
 		g.display()
-		key := read_input()
-		g.set_direction(key)
+		key := readInput()
+		g.setDirection(key)
 		g.check_food()
 		g.update()
 	}
