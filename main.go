@@ -30,7 +30,7 @@ func (g *game) initFood() {
 	g.food = &food{rand.Intn(g.height), rand.Intn(g.width)}
 }
 
-func (g *game) check_food() {
+func (g *game) checkFood() {
 	// check if snake's head is on the food
 	if g.snake.Front().Value.(*snake).x == g.food.x && g.snake.Front().Value.(*snake).y == g.food.y {
 		// Add a new element to the snake's body
@@ -152,7 +152,7 @@ func main() {
 		g.display()
 		key := readInput()
 		g.setDirection(key)
-		g.check_food()
+		g.checkFood()
 		g.update()
 	}
 }
