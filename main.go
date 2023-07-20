@@ -149,10 +149,7 @@ func main() {
 	g.initFood()
 
 	for g.running {
-		g.display()
-		key := readInput()
-		g.setDirection(key)
-		g.checkFood()
+
 		g.update()
 	}
 }
