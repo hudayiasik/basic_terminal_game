@@ -142,10 +142,10 @@ func readInput() rune {
 }
 
 func main() {
-	snake := snake{0, 3}
-	food := food{0, 0}
-	g := game{list.New(), &food, 10, 10, true, 2}
-	g.snake.PushBack(&snake) // head
+	s := snake{0, 3}
+	f := food{0, 0}
+	g := game{list.New(), &f, 10, 10, true, 2}
+	g.snake.PushBack(&s) // head
 	g.initFood()
 
 	for g.running {
